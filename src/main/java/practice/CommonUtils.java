@@ -11,13 +11,14 @@ import javax.crypto.NoSuchPaddingException;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.security.*;
+import java.util.List;
 
 public class CommonUtils {
 
     /**
      * 公钥加密(RSA)
      *
-     * @param data 原数据
+     * @param data      原数据
      * @param publicKey 公钥
      * @return 加密后数据(Base64编码后)
      */
@@ -36,7 +37,7 @@ public class CommonUtils {
     /**
      * 私钥解密(RSA)
      *
-     * @param data 加密数据(Base64编码后)
+     * @param data       加密数据(Base64编码后)
      * @param privateKey 私钥
      * @return 解密后数据
      */
@@ -55,7 +56,7 @@ public class CommonUtils {
     /**
      * 生成签名
      *
-     * @param data 原数据(SHA256算法)
+     * @param data       原数据(SHA256算法)
      * @param privateKey 私钥
      * @return 签名字节数组
      */
@@ -72,8 +73,8 @@ public class CommonUtils {
     /**
      * 验证签名
      *
-     * @param originData 原数据
-     * @param publicKey 公钥
+     * @param originData  原数据
+     * @param publicKey   公钥
      * @param signedBytes 签名
      * @return 验证结果
      */
@@ -87,28 +88,32 @@ public class CommonUtils {
         return signature.verify(signedBytes);
     }
 
-    public static boolean bloomFilter() {
-        int total = 1000000; // 总数量
-        int checktotal = 1010000;// 需要检查的数量
+    /**
+     * 布隆过滤器
+     *
+     * @param list 初始数据集合
+     * @param checkList 匹配集合
+     * @return boolean
+     */
+    public static void bloomFilter(List<String> list, List<String> checkList, double fpp) {
         BloomFilter<CharSequence> filterList =
-                BloomFilter.create(Funnels.stringFunnel(StandardCharsets.UTF_8), total, 0.03D);
-        // 初始化100000条数据到过滤器中
-        for (int i = 0; i < total; i++) {
-            filterList.put("" + i);
+                BloomFilter.create(Funnels.stringFunnel(StandardCharsets.UTF_8), list.size(), fpp);
+        // 初始化数据到过滤器中
+        for (String string : list) {
+            filterList.put(string);
         }
         // 判断值是否存在过滤器中
         int checkedCount = 0;
-        for (int i = 0; i < checktotal; i++) {
-            if (filterList.mightContain("" + i)) {
+        for (String checkString : checkList) {
+            if (filterList.mightContain(checkString)) {
                 checkedCount++;
             }
         }
-        BigDecimal fpp = new BigDecimal(checkedCount - total)
-                .divide(new BigDecimal(checktotal), 10,BigDecimal.ROUND_HALF_UP);
-        System.out.println("预期结果数量 " + total);
+        BigDecimal actualFpp = new BigDecimal(checkedCount - list.size())
+                .multiply(new BigDecimal(100))
+                .divide(new BigDecimal(checkList.size()), 10, BigDecimal.ROUND_HALF_UP);
+        System.out.println("预期结果数量 " + list.size());
         System.out.println("已匹配数量 " + checkedCount);
-        System.out.println("误判率为 " + fpp);
-
-        return false;
+        System.out.println("预期误判率为 " + fpp + ", 实际误判率为 " + actualFpp);
     }
 }

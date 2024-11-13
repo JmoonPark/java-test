@@ -1,8 +1,11 @@
 package practice;
 
-import java.security.*;
-
 import org.apache.commons.codec.digest.DigestUtils;
+
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainPractice {
     public static void main(String[] args) {
@@ -50,6 +53,14 @@ public class MainPractice {
      * 测试布隆过滤器
      */
     public static void test2() {
-        CommonUtils.bloomFilter();
+        List<String> list = new ArrayList<>();
+        List<String> checkList = new ArrayList<>();
+        for (int i = 0; i < 1000000; i++) {
+            list.add("" + i);
+        }
+        for (int i = 0; i < 1010000; i++) {
+            checkList.add("" + i);
+        }
+        CommonUtils.bloomFilter(list, checkList, 0.03D);
     }
 }
