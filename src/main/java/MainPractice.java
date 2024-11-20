@@ -1,16 +1,19 @@
-package practice;
-
+import leetCode.test1.GoodNode3249;
+import leetCode.test1.NewRoadShortestDistance3244;
 import org.apache.commons.codec.digest.DigestUtils;
+import practice.CommonUtils;
+import practice.MyKeyPair;
+import practice.TransactionNode;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MainPractice {
     public static void main(String[] args) {
-//        test();
-        test2();
+        test4();
     }
 
     /**
@@ -62,5 +65,35 @@ public class MainPractice {
             checkList.add("" + i);
         }
         CommonUtils.bloomFilter(list, checkList, 0.03D);
+    }
+
+    /**
+     * 测试GoodNode3249
+     */
+    public static void test3() {
+        int[][] edges = new int[12][2];
+        edges[0] = new int[]{0, 1};
+        edges[1] = new int[]{1, 2};
+        edges[2] = new int[]{1, 3};
+        edges[3] = new int[]{1, 4};
+        edges[4] = new int[]{0, 5};
+        edges[5] = new int[]{5, 6};
+        edges[6] = new int[]{6, 7};
+        edges[7] = new int[]{7, 8};
+        edges[8] = new int[]{0, 9};
+        edges[9] = new int[]{9, 10};
+        edges[10] = new int[]{9, 12};
+        edges[11] = new int[]{10, 11};
+        int i = new GoodNode3249().countGoodNodes(edges);
+        System.out.println("计算结果为：" + i);
+    }
+
+    public static void test4() {
+        int[][] queries = new int[2][2];
+        queries[0] = new int[]{0, 3};
+        queries[1] = new int[]{0, 2};
+//        queries[2] = new int[]{0, 4};
+        int[] ints = NewRoadShortestDistance3244.shortestDistance(4, queries);
+        System.out.println("计算结果为：" + Arrays.toString(ints));
     }
 }
