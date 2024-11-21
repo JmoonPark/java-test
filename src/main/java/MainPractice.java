@@ -1,5 +1,6 @@
 import leetCode.test1.GoodNode3249;
 import leetCode.test1.NewRoadShortestDistance3244;
+import leetCode.test1.SnakeInTheMatrix3248;
 import org.apache.commons.codec.digest.DigestUtils;
 import practice.CommonUtils;
 import practice.MyKeyPair;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class MainPractice {
     public static void main(String[] args) {
-        test4();
+        test3248();
     }
 
     /**
@@ -70,7 +71,7 @@ public class MainPractice {
     /**
      * 测试GoodNode3249
      */
-    public static void test3() {
+    public static void test3249() {
         int[][] edges = new int[12][2];
         edges[0] = new int[]{0, 1};
         edges[1] = new int[]{1, 2};
@@ -88,12 +89,17 @@ public class MainPractice {
         System.out.println("计算结果为：" + i);
     }
 
-    public static void test4() {
+    public static void test3244() {
         int[][] queries = new int[2][2];
         queries[0] = new int[]{0, 3};
         queries[1] = new int[]{0, 2};
 //        queries[2] = new int[]{0, 4};
         int[] ints = NewRoadShortestDistance3244.shortestDistance(4, queries);
         System.out.println("计算结果为：" + Arrays.toString(ints));
+    }
+
+    public static void test3248() {
+        int move = SnakeInTheMatrix3248.move(3, new String[]{"DOWN", "RIGHT", "UP", "RIGHT", "RIGHT"});
+        System.out.println("计算结果为：" + move);
     }
 }
